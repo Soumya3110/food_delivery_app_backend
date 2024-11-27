@@ -11,6 +11,7 @@ const restaurantRouter = require("./routes/restaurant.js");
 const menuRouter = require("./routes/menu.js");
 const addressRouter = require("./routes/deliveryAddress.js");
 const reviewRouter = require("./routes/review.js");
+const indexRouter = require("./routes/index.js");
 const imageRouter = require("./routes/otherImg.js");
 
 dotenv.config();
@@ -23,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(incomingRequestLogger);
 
 // Routes
+app.use("/api/fd", indexRouter);
 app.use("/api/fd/user", userRouter);
 app.use("/api/fd/cart", cartRouter);
 app.use("/api/fd/payment", paymentRouter);
