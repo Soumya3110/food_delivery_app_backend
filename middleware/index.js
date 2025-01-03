@@ -5,8 +5,6 @@ const incomingRequestLogger = (req, res, next) => {
     next();
 }
 
-
-
 module.exports = {
     incomingRequestLogger
 }

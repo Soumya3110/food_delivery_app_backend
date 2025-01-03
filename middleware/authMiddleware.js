@@ -1,20 +1,20 @@
-const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
-dotenv.config();
+const jwt = require('jsonwebtoken');
+
 
 const authMiddleware = (req, res, next) => {
-    const token = req.headers.authorization; // Token is expected in the Authorization header
-    if (!token) {
-        return res.status(401).json({ message: "User is not logged in" });
-    }
+  const token = req.header('Authorization')?.split(' ')[1]; 
 
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET); // Decode and verify the token
-        req.user = decoded.id; // Attach the user's ID from the token to the request object
-        next(); // Proceed to the next middleware or route handler
-    } catch (error) {
-        res.status(401).json({ message: "User is not logged in" });
-    }
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'No token, authorization denied' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = { userId: decoded.id };  
+    next();
+  } catch (error) {
+    return res.status(401).json({ success: false, message: 'Token is not valid' });
+  }
 };
 
 module.exports = authMiddleware;

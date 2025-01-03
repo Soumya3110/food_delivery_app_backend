@@ -4,15 +4,12 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const { incomingRequestLogger } = require("./middleware/index.js");
-const userRouter = require("./routes/user.js");
-const cartRouter = require("./routes/cart.js");
-const paymentRouter = require("./routes/payment.js");
-const restaurantRouter = require("./routes/restaurant.js");
-const menuRouter = require("./routes/menu.js");
-const addressRouter = require("./routes/deliveryAddress.js");
-const reviewRouter = require("./routes/review.js");
-const indexRouter = require("./routes/index.js");
-const imageRouter = require("./routes/otherImg.js");
+const authRoutes = require('./routes/user_routes');
+const folderRoutes = require('./routes/folder_routes');
+
+
+const errorHandler = require('./middleware/errorhandler.js');
+
 
 dotenv.config();
 const app = express();
@@ -24,15 +21,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(incomingRequestLogger);
 
 // Routes
-app.use("/api/fd", indexRouter);
-app.use("/api/fd/user", userRouter);
-app.use("/api/fd/cart", cartRouter);
-app.use("/api/fd/payment", paymentRouter);
-app.use("/api/fd/restaurant", restaurantRouter);
-app.use("/api/fd/menu", menuRouter);
-app.use("/api/fd/address", addressRouter);
-app.use("/api/fd/review", reviewRouter);
-app.use("/api/fd/image", imageRouter);
+app.use('/api/user', authRoutes);
+app.use('/api/folders', folderRoutes);
+
+
+// Error Handler
+app.use(errorHandler);
 
 // Start server
 const PORT = process.env.PORT;
